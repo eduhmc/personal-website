@@ -1,0 +1,286 @@
+---
+import '../styles/global.css';
+import { site, nav } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = site.description } = Astro.props;
+const pageTitle = title ? `${title} · ${site.name}` : site.title;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#fbf9f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e0e0d" media="(prefers-color-scheme: dark)" />
+    <script is:inline>
+      document.documentElement.classList.remove('no-js');
+      try {
+        const saved = localStorage.getItem('theme');
+        const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site-header container">
+      <a class="logo" href="/" aria-label="Home">
+        <span class="logo-dot"></span>{site.shortName}
+      </a>
+      <nav aria-label="Main">
+        <ul>
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  class="pill"
+                  href={item.href}
+                  style={`--pill:${item.color}`}
+                  aria-current={path === item.href ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <circle cx="12" cy="12" r="5" fill="currentColor"></circle>
+          <g stroke="currentColor" stroke-width="2" stroke-linecap="round" class="rays">
+            <path d="M12 1.5v2M12 20.5v2M1.5 12h2M20.5 12h2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M4.6 19.4 6 18M18 6l1.4-1.4"></path>
+          </g>
+        </svg>
+      </button>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer container">
+      <p class="mono">© {new Date().getFullYear()} {site.name}</p>
+      <ul>
+        {
+          site.links.map((l) => (
+            <li>
+              <a href={l.href}>{l.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mono hint">psst — ↑ ↑ ↓ ↓ ← → ← → b a</p>
+    </footer>
+
+    <div class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      // Theme toggle
+      const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle')!;
+      toggle.addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        try {
+          localStorage.setItem('theme', next);
+        } catch {}
+      });
+
+      // Blur-in reveal on scroll
+      const io = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-in');
+              io.unobserve(e.target);
+            }
+          }),
+        { rootMargin: '0px 0px -8% 0px' },
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+      // Easter egg: Konami code unlocks the lab
+      const code = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+      let pos = 0;
+      const toast = document.querySelector<HTMLElement>('.toast')!;
+      window.addEventListener('keydown', (e) => {
+        pos = e.key === code[pos] ? pos + 1 : e.key === code[0] ? 1 : 0;
+        if (pos === code.length) {
+          pos = 0;
+          toast.innerHTML = 'You found it. <a href="/lab">Enter the lab →</a>';
+          toast.classList.add('show');
+          document.documentElement.classList.add('party');
+          setTimeout(() => toast.classList.remove('show'), 6000);
+        }
+      });
+    </script>
+
+    <style>
+      .skip {
+        position: absolute;
+        left: -9999px;
+      }
+      .skip:focus {
+        left: 16px;
+        top: 16px;
+        z-index: 200;
+        background: var(--ink);
+        color: var(--paper);
+        padding: 8px 12px;
+        border-radius: 8px;
+      }
+
+      .site-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding-block: 22px;
+      }
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-serif);
+        font-size: 24px;
+        text-decoration: none;
+        margin-right: auto;
+      }
+      .logo-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--accent);
+        transition: transform 0.4s var(--ease);
+      }
+      .logo:hover .logo-dot {
+        transform: scale(1.6);
+      }
+
+      nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .pill {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 3px 8px;
+        border-radius: 5px;
+        background: var(--pill);
+        color: var(--ink);
+        transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+      }
+      .pill:hover {
+        transform: translateY(-2px) rotate(-2deg);
+        box-shadow: 0 3px 0 color-mix(in srgb, var(--ink) 15%, transparent);
+      }
+      .pill[aria-current='page'] {
+        outline: 1px solid var(--ink);
+      }
+
+      .theme-toggle {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: transparent;
+        color: var(--ink);
+        cursor: pointer;
+        transition: transform 0.5s var(--ease), border-color 0.2s;
+      }
+      .theme-toggle:hover {
+        border-color: var(--ink-3);
+        transform: rotate(45deg);
+      }
+      :global([data-theme='dark']) .rays {
+        opacity: 0;
+      }
+
+      .site-footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px 24px;
+        padding-block: 48px 40px;
+        margin-top: 96px;
+        border-top: 1px solid var(--line);
+      }
+      .site-footer ul {
+        display: flex;
+        gap: 18px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .site-footer p {
+        margin: 0;
+      }
+      .hint {
+        margin-left: auto !important;
+        opacity: 0.55;
+        text-transform: none;
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        transform: translate(-50%, 140%);
+        background: var(--ink);
+        color: var(--paper);
+        padding: 10px 16px;
+        border-radius: 999px;
+        font-size: 14px;
+        z-index: 150;
+        transition: transform 0.5s var(--ease);
+      }
+      .toast.show {
+        transform: translate(-50%, 0);
+      }
+      .toast :global(a) {
+        color: inherit;
+        text-decoration-color: var(--accent);
+      }
+
+      @media (max-width: 560px) {
+        .site-header {
+          flex-wrap: wrap;
+        }
+        nav {
+          order: 3;
+          width: 100%;
+        }
+        .hint {
+          display: none;
+        }
+      }
+    </style>
+  </body>
+</html>

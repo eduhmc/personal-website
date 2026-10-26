@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+
+const jobs = (await getCollection('experience')).sort((a, b) => b.data.start.localeCompare(a.data.start));
+
+const fmt = (ym: string) => {
+  const [y, m] = ym.split('-').map(Number);
+  return new Date(y, (m || 1) - 1).toLocaleString('en-US', { month: 'short', year: 'numeric' });
+};
+---
+
+<ol class="timeline">
+  {
+    jobs.map((j) => (
+      <li class="reveal">
+        <span class="mono when">
+          {fmt(j.data.start)} — {j.data.end ? fmt(j.data.end) : 'Now'}
+        </span>
+        <div>
+          <h3>
+            {j.data.url ? <a href={j.data.url}>{j.data.org}</a> : j.data.org}
+            <span class="role"> · {j.data.role}</span>
+          </h3>
+          <p>{j.data.summary}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 20px;
+    padding-block: 18px;
+    border-top: 1px solid var(--line);
+  }
+  li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  .when {
+    padding-top: 6px;
+  }
+  h3 {
+    font-size: 23px;
+  }
+  .role {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+  p {
+    margin: 4px 0 0;
+    color: var(--ink-2);
+    font-size: 15px;
+  }
+  @media (max-width: 560px) {
+    li {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+</style>

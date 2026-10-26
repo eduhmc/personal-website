@@ -1,0 +1,82 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, summary, year, tags, color, link, repo } = project.data;
+---
+
+<Base title={title} description={summary}>
+  <article class="container">
+    <a class="back mono" href="/#work">← All work</a>
+    <header>
+      <p class="mono">{year} · {tags.join(' · ')}</p>
+      <h1>{title}</h1>
+      <p class="summary">{summary}</p>
+      {
+        (link || repo) && (
+          <p class="links">
+            {link && <a href={link}>Visit ↗</a>}
+            {repo && <a href={repo}>Code ↗</a>}
+          </p>
+        )
+      }
+    </header>
+    <div class="cover" style={`--tile:${color}`}>
+      <span class="tape" aria-hidden="true"></span>
+    </div>
+    <div class="prose measure">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  article {
+    padding-top: 24px;
+  }
+  .back {
+    text-decoration: none;
+    text-transform: none;
+  }
+  header {
+    max-width: var(--measure);
+    margin: 40px 0 36px;
+  }
+  h1 {
+    font-size: clamp(44px, 7vw, 72px);
+    margin-top: 10px;
+  }
+  .summary {
+    font-size: 20px;
+    color: var(--ink-2);
+  }
+  .links {
+    display: flex;
+    gap: 18px;
+  }
+  .cover {
+    position: relative;
+    aspect-ratio: 16 / 7;
+    border-radius: 10px;
+    background: var(--tile);
+    margin-bottom: 56px;
+  }
+  :global([data-theme='dark']) .cover {
+    filter: brightness(0.55);
+  }
+  .prose :global(h2) {
+    font-size: 30px;
+    margin: 44px 0 10px;
+  }
+  .prose :global(img) {
+    border-radius: 8px;
+    margin-block: 24px;
+  }
+</style>

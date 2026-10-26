@@ -1,0 +1,43 @@
+---
+interface Props {
+  facts: { label: string; value: string }[];
+}
+const { facts } = Astro.props;
+---
+
+<dl class="facts">
+  {
+    facts.map((f) => (
+      <div>
+        <dt class="mono">{f.label}</dt>
+        <dd>{f.value}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .facts {
+    margin: 32px 0 0;
+    max-width: 460px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 6px 18px;
+    background: color-mix(in srgb, var(--paper-2) 60%, transparent);
+    transition-delay: 0.1s;
+  }
+  .facts div {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 12px;
+    padding-block: 10px;
+    align-items: baseline;
+  }
+  .facts div + div {
+    border-top: 1px dashed var(--line);
+  }
+  dd {
+    margin: 0;
+    font-size: 15px;
+  }
+</style>

@@ -1,0 +1,113 @@
+---
+import fs from 'node:fs';
+import Base from '../layouts/Base.astro';
+import Timeline from '../components/Timeline.astro';
+import { site } from '../data/site';
+
+// Drop your resume at public/resume.pdf and a download button appears.
+const hasPdf = fs.existsSync('public/resume.pdf');
+---
+
+<Base title="CV">
+  <div class="container measure cv">
+    <header>
+      <h1>{site.name}</h1>
+      <p class="mono">{site.location} · {site.links.map((l) => l.label).join(' · ')}</p>
+      <div class="actions no-print">
+        {hasPdf && <a class="btn" href="/resume.pdf" download>Download PDF</a>}
+        <button class="btn ghost" type="button" onclick="window.print()">Print</button>
+      </div>
+    </header>
+
+    <section>
+      <h2 class="mono">Experience</h2>
+      <Timeline />
+    </section>
+
+    <section>
+      <h2 class="mono">Education</h2>
+      {
+        site.education.map((e) => (
+          <div class="row">
+            <span class="mono">{e.years}</span>
+            <div>
+              <h3>{e.school}</h3>
+              <p>{e.degree}</p>
+            </div>
+          </div>
+        ))
+      }
+    </section>
+
+    <section>
+      <h2 class="mono">Skills</h2>
+      <p>{site.skills.join(' · ')}</p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .cv {
+    padding-top: 32px;
+  }
+  h1 {
+    font-size: clamp(44px, 7vw, 64px);
+  }
+  header {
+    margin-bottom: 40px;
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .btn {
+    font: inherit;
+    font-size: 14px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink);
+  }
+  section {
+    margin-top: 40px;
+  }
+  section h2 {
+    font-family: var(--font-mono);
+    margin-bottom: 12px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 20px;
+    padding-block: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .row h3 {
+    font-size: 23px;
+  }
+  .row p {
+    margin: 2px 0 0;
+    color: var(--ink-2);
+  }
+  @media print {
+    .cv :global(.reveal) {
+      opacity: 1 !important;
+      filter: none !important;
+      transform: none !important;
+    }
+  }
+  @media (max-width: 560px) {
+    .row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+</style>

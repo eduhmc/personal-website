@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Timeline from '../components/Timeline.astro';
+import { site } from '../data/site';
+
+const projects = (await getCollection('projects', (p) => p.data.featured)).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base>
+  <Hero />
+
+  <Section id="about" num="01" title="About">
+    {site.about.map((p) => <p class="reveal">{p}</p>)}
+  </Section>
+
+  <Section id="work" num="02" title="Selected work" wide>
+    <div class="grid">
+      {projects.map((p, i) => <ProjectCard project={p} index={i} />)}
+    </div>
+  </Section>
+
+  <Section id="experience" num="03" title="Experience">
+    <Timeline />
+    <p class="reveal more"><a href="/cv">Full CV →</a></p>
+  </Section>
+
+  <Section id="now" num="04" title="Now">
+    <ul class="now">
+      {site.now.map((n) => <li class="reveal">{n}</li>)}
+    </ul>
+    <p class="reveal mono lab-hint">
+      Bored? There's a little game in the <a href="/lab">lab</a>.
+    </p>
+  </Section>
+</Base>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 48px 36px;
+  }
+  .more {
+    margin-top: 20px;
+  }
+  .now {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .now li {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 8px;
+  }
+  .now li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .lab-hint {
+    margin-top: 32px;
+    text-transform: none;
+  }
+</style>

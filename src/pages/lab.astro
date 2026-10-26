@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import CatchGame from '../components/CatchGame';
+import { likes } from '../data/likes';
+---
+
+<Base title="Lab" description="Small experiments and a game.">
+  <div class="container lab">
+    <header class="measure">
+      <p class="mono">05 — Lab</p>
+      <h1>A small <em>game</em></h1>
+      <p>Everything falling is something I like. Catch as many as you can.</p>
+    </header>
+    <CatchGame client:visible likes={likes} />
+  </div>
+</Base>
+
+<style>
+  .lab {
+    padding-top: 32px;
+  }
+  h1 {
+    font-size: clamp(44px, 7vw, 64px);
+    margin-top: 8px;
+  }
+  h1 em {
+    color: var(--accent);
+    font-size: 1em;
+  }
+  header p:last-child {
+    color: var(--ink-2);
+  }
+  .lab :global(.game) {
+    position: relative;
+    max-width: 480px;
+    margin: 36px auto 0;
+  }
+  .lab :global(.game-canvas) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 480 / 560;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper-2);
+    touch-action: none;
+  }
+  .lab :global(.game-overlay) {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+    padding: 24px;
+    background: color-mix(in srgb, var(--paper) 70%, transparent);
+    backdrop-filter: blur(3px);
+    border-radius: 10px;
+  }
+  .lab :global(.game-overlay p) {
+    margin: 0;
+  }
+  .lab :global(.game-big) {
+    font-family: var(--font-serif);
+    font-size: 34px;
+    line-height: 1.1;
+  }
+  .lab :global(.game-btn) {
+    margin-top: 14px;
+    font: inherit;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 0;
+    background: var(--ink);
+    color: var(--paper);
+    cursor: pointer;
+  }
+</style>
