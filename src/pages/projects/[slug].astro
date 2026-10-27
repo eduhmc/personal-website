@@ -9,7 +9,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, summary, year, tags, color, link, repo } = project.data;
+const { title, summary, role, impact, year, tags, color, link, repo } = project.data;
 ---
 
 <Base title={title} description={summary}>
@@ -19,6 +19,10 @@ const { title, summary, year, tags, color, link, repo } = project.data;
       <p class="mono">{year} · {tags.join(' · ')}</p>
       <h1>{title}</h1>
       <p class="summary">{summary}</p>
+      <dl class="meta">
+        <div><dt class="mono">Role</dt><dd>{role}</dd></div>
+        <div><dt class="mono">Impact</dt><dd>{impact}</dd></div>
+      </dl>
       {
         (link || repo) && (
           <p class="links">
@@ -56,6 +60,24 @@ const { title, summary, year, tags, color, link, repo } = project.data;
   .summary {
     font-size: 20px;
     color: var(--ink-2);
+  }
+  .meta {
+    display: grid;
+    gap: 8px;
+    margin: 20px 0 0;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .meta div {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .meta dd {
+    margin: 0;
+    font-size: 15px;
   }
   .links {
     display: flex;

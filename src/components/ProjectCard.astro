@@ -6,7 +6,7 @@ interface Props {
   index: number;
 }
 const { project, index } = Astro.props;
-const { title, summary, year, tags, color } = project.data;
+const { title, summary, role, impact, year, tags, color } = project.data;
 // Alternate a slight tilt so the grid feels hand-placed.
 const tilt = [-1.2, 0.8, -0.4, 1.1][index % 4];
 ---
@@ -20,7 +20,9 @@ const tilt = [-1.2, 0.8, -0.4, 1.1][index % 4];
     <h3>{title}</h3>
     <span class="mono">{year}</span>
   </div>
+  <p class="role mono">{role}</p>
   <p>{summary}</p>
+  <p class="impact"><span class="mono">Impact</span> {impact}</p>
   <ul class="tags">{tags.map((t) => <li class="mono">{t}</li>)}</ul>
 </a>
 
@@ -76,6 +78,21 @@ const tilt = [-1.2, 0.8, -0.4, 1.1][index % 4];
     margin: 6px 0 10px;
     color: var(--ink-2);
     font-size: 15px;
+  }
+  .role {
+    margin: 4px 0 0;
+    font-size: 11px;
+    text-transform: none;
+  }
+  .impact {
+    color: var(--ink);
+    font-size: 14px;
+    padding-left: 10px;
+    border-left: 2px solid var(--accent);
+  }
+  .impact .mono {
+    margin-right: 6px;
+    font-size: 10.5px;
   }
   .tags {
     display: flex;

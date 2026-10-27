@@ -8,6 +8,9 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
+    // Product framing shown on the card: your role and the outcome.
+    role: z.string(),
+    impact: z.string(),
     year: z.number(),
     tags: z.array(z.string()).default([]),
     // Tile background color for the project card.

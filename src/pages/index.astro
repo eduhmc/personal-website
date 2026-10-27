@@ -17,18 +17,34 @@ const projects = (await getCollection('projects', (p) => p.data.featured)).sort(
     {site.about.map((p) => <p class="reveal">{p}</p>)}
   </Section>
 
-  <Section id="work" num="02" title="Selected work" wide>
+  <Section id="work" num="02" title="Things I've shipped" wide>
     <div class="grid">
       {projects.map((p, i) => <ProjectCard project={p} index={i} />)}
     </div>
   </Section>
 
-  <Section id="experience" num="03" title="Experience">
+  <Section id="principles" num="03" title="How I think about product">
+    <ol class="principles">
+      {
+        site.principles.map((pr, i) => (
+          <li class="reveal">
+            <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{pr.title}</h3>
+              <p>{pr.body}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+
+  <Section id="experience" num="04" title="Experience">
     <Timeline />
     <p class="reveal more"><a href="/cv">Full CV →</a></p>
   </Section>
 
-  <Section id="now" num="04" title="Now">
+  <Section id="now" num="05" title="Now">
     <ul class="now">
       {site.now.map((n) => <li class="reveal">{n}</li>)}
     </ul>
@@ -43,6 +59,29 @@ const projects = (await getCollection('projects', (p) => p.data.featured)).sort(
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 48px 36px;
+  }
+  .principles {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 22px;
+  }
+  .principles li {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 8px;
+  }
+  .principles .mono {
+    padding-top: 8px;
+    color: var(--accent);
+  }
+  .principles h3 {
+    font-size: 26px;
+  }
+  .principles p {
+    margin: 4px 0 0;
+    color: var(--ink-2);
   }
   .more {
     margin-top: 20px;
