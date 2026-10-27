@@ -10,7 +10,7 @@ export const site = {
   location: 'San Francisco',
 
   // Hero sentence. Wrap ONE word in *asterisks* to set it in italics.
-  intro: "I'm Eduardo, an engineer at YouTube who cares most about *why* we build, not just how.",
+  intro: 'I build product features for YouTube at Google.',
 
   // Quick-facts card next to the hero.
   facts: [
