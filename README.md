@@ -1,6 +1,6 @@
 # personal-website
 
-My personal site — Astro + React islands + MDX.
+My personal site — Astro + MDX.
 
 ## Run it
 
@@ -17,7 +17,6 @@ npm run build   # static site in dist/
 | What | File |
 |---|---|
 | Name, intro sentence, facts card, about, now, links, education, skills | `src/data/site.ts` |
-| Things I like (dot-grid icons + game) | `src/data/likes.ts` |
 | Projects (one file each, becomes /projects/<file-name>) | `src/content/projects/*.mdx` |
 | Jobs / experience | `src/content/experience/*.md` |
 | Colors, fonts, spacing | `src/styles/global.css` |
