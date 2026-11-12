@@ -88,10 +88,7 @@ const path = Astro.url.pathname;
           ))
         }
       </ul>
-      <p class="mono hint">psst — ↑ ↑ ↓ ↓ ← → ← → b a</p>
     </footer>
-
-    <div class="toast" role="status" aria-live="polite"></div>
 
     <script>
       // Theme toggle
@@ -116,21 +113,6 @@ const path = Astro.url.pathname;
         { rootMargin: '0px 0px -8% 0px' },
       );
       document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
-
-      // Easter egg: Konami code unlocks the lab
-      const code = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-      let pos = 0;
-      const toast = document.querySelector<HTMLElement>('.toast')!;
-      window.addEventListener('keydown', (e) => {
-        pos = e.key === code[pos] ? pos + 1 : e.key === code[0] ? 1 : 0;
-        if (pos === code.length) {
-          pos = 0;
-          toast.innerHTML = 'You found it. <a href="/lab">Enter the lab →</a>';
-          toast.classList.add('show');
-          document.documentElement.classList.add('party');
-          setTimeout(() => toast.classList.remove('show'), 6000);
-        }
-      });
     </script>
 
     <style>
@@ -242,32 +224,7 @@ const path = Astro.url.pathname;
       .site-footer p {
         margin: 0;
       }
-      .hint {
-        margin-left: auto !important;
-        opacity: 0.55;
-        text-transform: none;
-      }
 
-      .toast {
-        position: fixed;
-        left: 50%;
-        bottom: 24px;
-        transform: translate(-50%, 140%);
-        background: var(--ink);
-        color: var(--paper);
-        padding: 10px 16px;
-        border-radius: 999px;
-        font-size: 14px;
-        z-index: 150;
-        transition: transform 0.5s var(--ease);
-      }
-      .toast.show {
-        transform: translate(-50%, 0);
-      }
-      .toast :global(a) {
-        color: inherit;
-        text-decoration-color: var(--accent);
-      }
 
       @media (max-width: 560px) {
         .site-header {
@@ -276,9 +233,6 @@ const path = Astro.url.pathname;
         nav {
           order: 3;
           width: 100%;
-        }
-        .hint {
-          display: none;
         }
       }
     </style>

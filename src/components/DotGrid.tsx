@@ -35,7 +35,6 @@ export default function DotGrid({ likes }: Props) {
     const ctx = canvas.getContext('2d')!;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let colors = readColors(canvas);
-    let party = document.documentElement.classList.contains('party');
     let dots: Dot[] = [];
     let size = 0;
     let gap = 0;
@@ -104,8 +103,7 @@ export default function DotGrid({ likes }: Props) {
         }
         const wobble = reduced ? 0 : Math.sin(t / 600 + i * 0.35) * 0.35 * d.on;
         const r = base + d.on * gap * 0.25 + wobble;
-        if (party && d.on > 0.5) ctx.fillStyle = `hsl(${(i * 7 + t / 8) % 360} 75% 60%)`;
-        else ctx.fillStyle = d.on > 0.5 ? colors.ink : colors.dim;
+        ctx.fillStyle = d.on > 0.5 ? colors.ink : colors.dim;
         ctx.globalAlpha = 0.35 + d.on * 0.65;
         ctx.beginPath();
         ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
@@ -126,12 +124,11 @@ export default function DotGrid({ likes }: Props) {
 
     const ro = new ResizeObserver(layout);
     ro.observe(canvas);
-    // Re-read colors when the theme flips or the easter egg fires.
+    // Re-read colors when the theme flips.
     const mo = new MutationObserver(() => {
       colors = readColors(canvas);
-      party = document.documentElement.classList.contains('party');
     });
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     // Pause the loop when the hero scrolls out of view.
     const io = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting;

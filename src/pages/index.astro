@@ -48,9 +48,6 @@ const projects = (await getCollection('projects', (p) => p.data.featured)).sort(
     <ul class="now">
       {site.now.map((n) => <li class="reveal">{n}</li>)}
     </ul>
-    <p class="reveal mono lab-hint">
-      Bored? There's a little game in the <a href="/lab">lab</a>.
-    </p>
   </Section>
 </Base>
 
@@ -105,9 +102,5 @@ const projects = (await getCollection('projects', (p) => p.data.featured)).sort(
     height: 7px;
     border-radius: 50%;
     background: var(--accent);
-  }
-  .lab-hint {
-    margin-top: 32px;
-    text-transform: none;
   }
 </style>

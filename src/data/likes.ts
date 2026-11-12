@@ -1,5 +1,5 @@
 // Things you like. Each one becomes a chip under the hero; clicking it makes the
-// dot grid draw the icon, and the /lab game drops them from the sky.
+// dot grid draw the icon.
 //
 // `icon` is a 15×15 bitmap: '#' = dot on, '.' = dot off. Draw your own!
 // These are placeholders — swap in your real interests.

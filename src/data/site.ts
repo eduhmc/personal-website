@@ -67,6 +67,5 @@ export const site = {
 export const nav = [
   { label: 'Work', href: '/#work', color: 'var(--pill-blue)' },
   { label: 'Experience', href: '/#experience', color: 'var(--pill-yellow)' },
-  { label: 'Lab', href: '/lab', color: 'var(--pill-green)' },
   { label: 'CV', href: '/cv', color: 'var(--pill-pink)' },
 ];
