@@ -1,5 +1,5 @@
 ---
-title: "Copiar puede ser inventar."
+title: "Copying can be inventing."
 source:
   name: "Smells Like Teen Spirit"
   creator: "Nirvana"

@@ -1,5 +1,5 @@
 ---
-title: "Una bola más."
+title: "One more ball."
 source:
   name: "Rafael Nadal"
 category: "Sport"

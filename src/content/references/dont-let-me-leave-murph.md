@@ -6,7 +6,7 @@ source:
   year: 2014
 category: "Film"
 moment: "Inside the tesseract, Cooper pounds on the other side of the bookshelf, begging his past self to stay."
-meaning: "[Why it stays with you.]"
-feelings: ["Love", "Regret"]
+meaning: "It sounds like trying to look back and change something, when the only way to succeed is to carry it forward."
+feelings: ["Regret", "Perseverance"]
 added: 2026-11-11
 ---
