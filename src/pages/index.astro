@@ -5,9 +5,12 @@ import Hero from '../components/Hero.astro';
 import Section from '../components/Section.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Timeline from '../components/Timeline.astro';
+import ReferenceCard from '../components/ReferenceCard.astro';
 import { site } from '../data/site';
+import { getPublicReferences } from '../lib/references';
 
 const projects = (await getCollection('projects', (p) => p.data.featured)).sort((a, b) => a.data.order - b.data.order);
+const references = (await getPublicReferences()).filter((r) => r.data.featured).slice(0, 4);
 ---
 
 <Base>
@@ -27,6 +30,13 @@ const projects = (await getCollection('projects', (p) => p.data.featured)).sort(
     <Timeline />
     <p class="reveal more"><a href="/cv">Full CV →</a></p>
   </Section>
+
+  <Section id="references" num="04" title="things that stay with me" wide>
+    <div class="ref-grid">
+      {references.map((r) => <ReferenceCard reference={r} />)}
+    </div>
+    <p class="reveal more"><a href="/references">All references →</a></p>
+  </Section>
 </Base>
 
 <style>
@@ -34,6 +44,11 @@ const projects = (await getCollection('projects', (p) => p.data.featured)).sort(
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 48px 36px;
+  }
+  .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
   }
   .more {
     margin-top: 20px;

@@ -1,0 +1,163 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import ReferenceCard from '../../components/ReferenceCard.astro';
+import { getPublicReferences, sourceLine, categoryColor } from '../../lib/references';
+
+export async function getStaticPaths() {
+  const refs = await getPublicReferences();
+  return refs.map((reference) => ({
+    params: { slug: reference.id },
+    props: {
+      reference,
+      // Connections: other references that share a feeling, most overlap first.
+      related: refs
+        .filter((r) => r.id !== reference.id)
+        .map((r) => ({ r, shared: r.data.feelings.filter((f) => reference.data.feelings.includes(f)).length }))
+        .filter((x) => x.shared > 0)
+        .sort((a, b) => b.shared - a.shared)
+        .slice(0, 3)
+        .map((x) => x.r),
+    },
+  }));
+}
+
+const { reference, related } = Astro.props;
+const { title, category, moment, meaning, feelings, link, image, imageAlt } = reference.data;
+---
+
+<Base title={title} description={meaning}>
+  <article class="container measure ref">
+    <a class="back mono" href="/references">← All references</a>
+
+    <div class="media" style={`--tile:${categoryColor[category]}`}>
+      {image ? <Image src={image} alt={imageAlt ?? ''} widths={[680, 1360]} sizes="680px" /> : <span>{reference.data.source.name}</span>}
+    </div>
+
+    <ol class="steps">
+      <li>
+        <p class="mono">01 · The reference</p>
+        <h1>{title}</h1>
+        <p class="muted">{category} · {sourceLine(reference)}</p>
+      </li>
+      <li>
+        <p class="mono">02 · The moment</p>
+        <p>{moment}</p>
+        {link && <a href={link}>Go to the moment ↗</a>}
+      </li>
+      <li>
+        <p class="mono">03 · Why it stayed with me</p>
+        <p class="meaning">{meaning}</p>
+      </li>
+      <li>
+        <p class="mono">04 · What it represents</p>
+        <ul class="feelings">{feelings.map((f) => <li>{f}</li>)}</ul>
+      </li>
+    </ol>
+  </article>
+
+  {
+    related.length > 0 && (
+      <section class="container related">
+        <h2 class="mono">Connected by feeling</h2>
+        <div class="grid">
+          {related.map((r) => (
+            <ReferenceCard reference={r} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .ref {
+    padding-top: 32px;
+  }
+  .back {
+    text-decoration: none;
+    text-transform: none;
+  }
+  .media {
+    margin-top: 24px;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--tile);
+    display: grid;
+    place-items: center;
+  }
+  :global([data-theme='dark']) .media {
+    filter: brightness(0.6);
+  }
+  .media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .media span {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 4vw, 40px);
+    color: #141414;
+    text-align: center;
+    padding: 0 24px;
+  }
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 32px 0 0;
+  }
+  .steps > li {
+    padding-block: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .steps > li:first-child {
+    border-top: 0;
+  }
+  .steps .mono {
+    margin: 0 0 6px;
+  }
+  .steps p {
+    margin: 0;
+  }
+  h1 {
+    font-size: clamp(40px, 6vw, 60px);
+  }
+  .muted {
+    margin-top: 8px !important;
+    color: var(--ink-3);
+    font-size: 15px;
+  }
+  .meaning {
+    font-family: var(--font-serif);
+    font-size: 26px;
+    line-height: 1.3;
+  }
+  .feelings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+  }
+  .feelings li {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .related {
+    margin-top: 56px;
+  }
+  .related h2 {
+    font-family: var(--font-mono);
+    margin-bottom: 18px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+</style>

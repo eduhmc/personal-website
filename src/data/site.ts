@@ -46,5 +46,6 @@ export const nav = [
   { label: 'About', href: '/#about', color: 'var(--pill-green)' },
   { label: 'Projects', href: '/#projects', color: 'var(--pill-blue)' },
   { label: 'Experience', href: '/#experience', color: 'var(--pill-yellow)' },
-  { label: 'CV', href: '/cv', color: 'var(--pill-pink)' },
+  { label: 'References', href: '/references', color: 'var(--pill-pink)' },
+  { label: 'CV', href: '/cv', color: 'var(--paper-2)' },
 ];
