@@ -10,7 +10,11 @@ const projects = defineCollection({
     summary: z.string(),
     // Product framing shown on the card: your role and the outcome.
     role: z.string(),
-    impact: z.string(),
+    impact: z.string().optional(),
+    // For team cards: a list of the projects you did on that team, shown inside the card.
+    highlights: z.array(z.object({ title: z.string(), detail: z.string().optional() })).default([]),
+    // Free-form dates shown on the card instead of `year`, e.g. "2022 — 2024".
+    period: z.string().optional(),
     // Which group on the home page this card sits in (see workGroups in src/data/site.ts).
     group: z.enum(['google', 'tableau', 'berkeley', 'side', 'utk']),
     year: z.number().optional(),

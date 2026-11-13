@@ -5,17 +5,33 @@ interface Props {
   project: CollectionEntry<'projects'>;
 }
 const { project } = Astro.props;
-const { title, summary, role, impact, year, tags, color } = project.data;
+const { title, summary, role, impact, highlights, period, year, tags, color } = project.data;
+const when = period ?? year;
 ---
 
 <a class="card reveal" href={`/projects/${project.id}`} style={`--tile:${color}`}>
   <div class="head">
     <h3>{title}</h3>
-    {year && <span class="mono">{year}</span>}
+    {when && <span class="mono">{when}</span>}
   </div>
   <p class="role">{role}</p>
   <p class="summary">{summary}</p>
-  <p class="impact"><span class="mono">Impact</span>{impact}</p>
+  {impact && <p class="impact"><span class="mono">Impact</span>{impact}</p>}
+  {
+    highlights.length > 0 && (
+      <div class="highlights">
+        <p class="mono">Projects</p>
+        <ul>
+          {highlights.map((h) => (
+            <li>
+              <span class="h-title">{h.title}</span>
+              {h.detail && <span class="h-detail">{h.detail}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
   <div class="foot">
     <ul class="tags">{tags.map((t) => <li class="mono">{t}</li>)}</ul>
     <span class="arrow" aria-hidden="true">→</span>
@@ -92,6 +108,38 @@ const { title, summary, role, impact, year, tags, color } = project.data;
     flex-shrink: 0;
     font-size: 10px;
     color: var(--accent);
+  }
+  .highlights {
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+  .highlights .mono {
+    font-size: 10px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .highlights ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .highlights li {
+    display: flex;
+    flex-direction: column;
+    padding-block: 6px;
+  }
+  .highlights li + li {
+    border-top: 1px dashed var(--line);
+  }
+  .h-title {
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+  .h-detail {
+    font-size: 13.5px;
+    color: var(--ink-2);
   }
   .foot {
     display: flex;
