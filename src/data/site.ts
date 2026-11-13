@@ -15,7 +15,7 @@ export const site = {
   about: [
     "I'm a software engineer at Google, on Core Web Frameworks. Before that I spent two years doing full-stack work on YouTube's main web app, where I shipped features like the comment teaser on the watch page. The part I like most is the product side: figuring out what to build and why.",
     "Before Google I interned at Tableau, was on course staff for Berkeley's intro CS class, and co-founded UTK, a nonprofit that set up STEM labs in 150+ schools in Peru, Colombia and Argentina.",
-    "I studied EECS with a minor in Data Science at Berkeley. I'm from Lima, live in San Francisco, and speak Spanish, English and Italian. Outside work I play soccer, tennis and pretty much any racquet sport, and I love music and playing guitar.",
+    "I studied EECS with a minor in Data Science at Berkeley. I was born and raised in Lima, Peru, live in San Francisco, and speak Spanish, English and Italian. Outside work I play soccer, tennis and pretty much any racquet sport, and I love music and playing guitar.",
   ],
 
   education: [
