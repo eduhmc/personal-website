@@ -3,96 +3,103 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   project: CollectionEntry<'projects'>;
-  index: number;
 }
-const { project, index } = Astro.props;
+const { project } = Astro.props;
 const { title, summary, role, impact, year, tags, color } = project.data;
-// Alternate a slight tilt so the grid feels hand-placed.
-const tilt = [-1.2, 0.8, -0.4, 1.1][index % 4];
 ---
 
-<a class="card reveal" href={`/projects/${project.id}`} style={`--tile:${color};--tilt:${tilt}deg`}>
-  <div class="tile">
-    <span class="tape" aria-hidden="true"></span>
-    <span class="tile-title">{title}</span>
-  </div>
-  <div class="meta">
+<a class="card reveal" href={`/projects/${project.id}`} style={`--tile:${color}`}>
+  <div class="head">
     <h3>{title}</h3>
     {year && <span class="mono">{year}</span>}
   </div>
-  <p class="role mono">{role}</p>
-  <p>{summary}</p>
-  <p class="impact"><span class="mono">Impact</span> {impact}</p>
-  <ul class="tags">{tags.map((t) => <li class="mono">{t}</li>)}</ul>
+  <p class="role">{role}</p>
+  <p class="summary">{summary}</p>
+  <p class="impact"><span class="mono">Impact</span>{impact}</p>
+  <div class="foot">
+    <ul class="tags">{tags.map((t) => <li class="mono">{t}</li>)}</ul>
+    <span class="arrow" aria-hidden="true">→</span>
+  </div>
 </a>
 
 <style>
   .card {
-    display: block;
-    text-decoration: none;
-  }
-  .tile {
     position: relative;
-    display: grid;
-    place-items: center;
-    aspect-ratio: 4 / 3;
-    border-radius: 8px;
-    background: var(--tile);
-    transform: rotate(var(--tilt));
-    transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
-    box-shadow: 0 14px 30px -22px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    padding: 20px 20px 18px 24px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--paper-2) 55%, var(--paper));
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s var(--ease);
   }
-  :global([data-theme='dark']) .tile {
-    filter: brightness(0.55) saturate(0.9);
+  /* Colored accent edge, from the project's color. */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: color-mix(in srgb, var(--tile), #000 22%);
+    filter: saturate(2.2);
   }
-  .card:hover .tile {
-    transform: rotate(0deg) translateY(-4px);
-    box-shadow: 0 22px 40px -24px rgba(0, 0, 0, 0.5);
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--ink-3);
+    box-shadow: 0 16px 32px -24px rgba(0, 0, 0, 0.45);
   }
-  .tile-title {
-    font-family: var(--font-serif);
-    font-size: clamp(24px, 3vw, 34px);
-    color: #141414;
-    padding: 0 16px;
-    text-align: center;
-  }
-  .meta {
+  .head {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     gap: 12px;
-    margin-top: 18px;
   }
   h3 {
-    font-size: 24px;
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 4px;
-    text-decoration-thickness: 1px;
-    transition: text-decoration-color 0.2s;
+    font-size: 23px;
+    line-height: 1.15;
   }
-  .card:hover h3 {
-    text-decoration-color: var(--accent);
+  .head .mono {
+    flex-shrink: 0;
   }
   p {
-    margin: 6px 0 10px;
-    color: var(--ink-2);
-    font-size: 15px;
+    margin: 0;
   }
   .role {
-    margin: 4px 0 0;
-    font-size: 11px;
-    text-transform: none;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-3);
+  }
+  .summary {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-2);
   }
   .impact {
-    color: var(--ink);
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
     font-size: 14px;
-    padding-left: 10px;
-    border-left: 2px solid var(--accent);
+    line-height: 1.45;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
   }
   .impact .mono {
-    margin-right: 6px;
-    font-size: 10.5px;
+    flex-shrink: 0;
+    font-size: 10px;
+    color: var(--accent);
+  }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 4px;
   }
   .tags {
     display: flex;
@@ -106,6 +113,14 @@ const tilt = [-1.2, 0.8, -0.4, 1.1][index % 4];
     border: 1px solid var(--line);
     padding: 1px 7px;
     border-radius: 4px;
-    font-size: 10.5px;
+    font-size: 10px;
+  }
+  .arrow {
+    color: var(--ink-3);
+    transition: transform 0.3s var(--ease), color 0.3s;
+  }
+  .card:hover .arrow {
+    transform: translateX(4px);
+    color: var(--accent);
   }
 </style>

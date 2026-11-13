@@ -29,8 +29,8 @@ const groups = workGroups
             <span class="mono">{g.years}</span>
           </div>
           <div class="grid">
-            {g.items.map((p, i) => (
-              <ProjectCard project={p} index={i} />
+            {g.items.map((p) => (
+              <ProjectCard project={p} />
             ))}
           </div>
         </div>
@@ -46,23 +46,52 @@ const groups = workGroups
 </Base>
 
 <style>
-  .grid {
+  /* Each org: name + dates on the left, its cards on the right. */
+  .group {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 48px 36px;
+    grid-template-columns: 210px 1fr;
+    gap: 16px 32px;
+    padding-block: 28px;
+    border-top: 1px solid var(--line);
   }
-  .group + .group {
-    margin-top: 64px;
+  .group:first-child {
+    border-top: 0;
+    padding-top: 4px;
   }
   .group-head {
+    position: sticky;
+    top: 24px;
+    align-self: start;
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 24px;
+    flex-direction: column;
+    gap: 4px;
   }
   .group-head h3 {
-    font-size: 28px;
+    font-size: 26px;
+    line-height: 1.15;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  /* A group with one card uses the full row instead of leaving a hole. */
+  .grid > :global(:only-child) {
+    grid-column: 1 / -1;
+  }
+  @media (max-width: 760px) {
+    .group {
+      grid-template-columns: 1fr;
+    }
+    .group-head {
+      position: static;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .grid {
+      grid-template-columns: 1fr;
+    }
   }
   .more {
     margin-top: 20px;
