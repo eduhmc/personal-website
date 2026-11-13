@@ -42,7 +42,7 @@ export const site = {
   ],
 };
 
-// Groups for the projects section, in display order. Each project's `group` field points here.
+// Groups for the experience section, in display order. Each project's `group` field points here.
 export const workGroups = [
   { id: 'google', name: 'Google', years: '2022 — now' },
   { id: 'tableau', name: 'Salesforce · Tableau', years: '2021' },
@@ -53,8 +53,8 @@ export const workGroups = [
 
 export const nav = [
   { label: 'About', href: '/#about', color: 'var(--pill-green)' },
-  { label: 'Projects', href: '/#projects', color: 'var(--pill-blue)' },
-  { label: 'Experience', href: '/#experience', color: 'var(--pill-yellow)' },
+  { label: 'Experience', href: '/#experience', color: 'var(--pill-blue)' },
+  { label: 'Timeline', href: '/#timeline', color: 'var(--pill-yellow)' },
   { label: 'References', href: '/references', color: 'var(--pill-pink)' },
   { label: 'CV', href: '/cv', color: 'var(--paper-2)' },
 ];
