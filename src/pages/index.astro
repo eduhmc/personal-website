@@ -5,9 +5,12 @@ import Hero from '../components/Hero.astro';
 import Section from '../components/Section.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Timeline from '../components/Timeline.astro';
-import { site } from '../data/site';
+import { site, workGroups } from '../data/site';
 
 const projects = (await getCollection('projects', (p) => p.data.featured)).sort((a, b) => a.data.order - b.data.order);
+const groups = workGroups
+  .map((g) => ({ ...g, items: projects.filter((p) => p.data.group === g.id) }))
+  .filter((g) => g.items.length > 0);
 ---
 
 <Base>
@@ -18,9 +21,21 @@ const projects = (await getCollection('projects', (p) => p.data.featured)).sort(
   </Section>
 
   <Section id="projects" num="02" title="projects" wide>
-    <div class="grid">
-      {projects.map((p, i) => <ProjectCard project={p} index={i} />)}
-    </div>
+    {
+      groups.map((g) => (
+        <div class="group">
+          <div class="group-head reveal">
+            <h3>{g.name}</h3>
+            <span class="mono">{g.years}</span>
+          </div>
+          <div class="grid">
+            {g.items.map((p, i) => (
+              <ProjectCard project={p} index={i} />
+            ))}
+          </div>
+        </div>
+      ))
+    }
   </Section>
 
   <Section id="experience" num="03" title="experience">
@@ -35,6 +50,19 @@ const projects = (await getCollection('projects', (p) => p.data.featured)).sort(
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 48px 36px;
+  }
+  .group + .group {
+    margin-top: 64px;
+  }
+  .group-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .group-head h3 {
+    font-size: 28px;
   }
   .more {
     margin-top: 20px;

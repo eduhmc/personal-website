@@ -18,7 +18,7 @@ const tilt = [-1.2, 0.8, -0.4, 1.1][index % 4];
   </div>
   <div class="meta">
     <h3>{title}</h3>
-    <span class="mono">{year}</span>
+    {year && <span class="mono">{year}</span>}
   </div>
   <p class="role mono">{role}</p>
   <p>{summary}</p>

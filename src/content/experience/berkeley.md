@@ -1,8 +1,8 @@
 ---
 org: "UC Berkeley EECS"
-role: "Teaching & Research Assistant"
+role: "Research Assistant · Teaching Assistant (CS10) · Lab Assistant"
 start: "2019-01"
 end: "2022-05"
 location: "Berkeley, CA"
-summary: "Course staff for BJC, an intro CS course with 700+ students. Designed and launched a cheating-detection system and question generators."
+summary: "Research on cheating detection, written up as a paper. Course staff and lab assistant for CS10, an intro CS course with 700+ students."
 ---

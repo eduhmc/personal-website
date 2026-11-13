@@ -11,7 +11,9 @@ const projects = defineCollection({
     // Product framing shown on the card: your role and the outcome.
     role: z.string(),
     impact: z.string(),
-    year: z.number(),
+    // Which group on the home page this card sits in (see workGroups in src/data/site.ts).
+    group: z.enum(['google', 'tableau', 'berkeley', 'side', 'utk']),
+    year: z.number().optional(),
     tags: z.array(z.string()).default([]),
     // Tile background color for the project card.
     color: z.string().default('#e9e3d3'),

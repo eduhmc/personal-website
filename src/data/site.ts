@@ -42,6 +42,15 @@ export const site = {
   ],
 };
 
+// Groups for the projects section, in display order. Each project's `group` field points here.
+export const workGroups = [
+  { id: 'google', name: 'Google', years: '2022 — now' },
+  { id: 'tableau', name: 'Salesforce · Tableau', years: '2021' },
+  { id: 'berkeley', name: 'UC Berkeley', years: '2019 — 2022' },
+  { id: 'side', name: 'Side projects', years: 'On my own time' },
+  { id: 'utk', name: 'UTK · United Technologies for Kids', years: '2016 — 2021' },
+] as const;
+
 export const nav = [
   { label: 'About', href: '/#about', color: 'var(--pill-green)' },
   { label: 'Projects', href: '/#projects', color: 'var(--pill-blue)' },
