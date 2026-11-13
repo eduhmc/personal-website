@@ -6,7 +6,7 @@ export const site = {
   shortName: 'Eduardo',
   title: 'Eduardo Huerta-Mercado — Software engineer, product-minded',
   description:
-    'Software engineer at YouTube working on the product side. Berkeley EECS, co-founder of UTK, a STEM nonprofit in Peru and Colombia.',
+    'Software engineer at YouTube working on the product side. Berkeley EECS, co-founder of UTK, a STEM nonprofit in Peru, Colombia and Argentina.',
   location: 'San Francisco',
 
   // The one-liner at the top of the home page.
@@ -14,8 +14,8 @@ export const site = {
 
   about: [
     "I'm a software engineer at YouTube, on the Main App Web team. I've shipped features like the comment teaser on the watch page, and the part I like most is the product side: figuring out what to build and why.",
-    "Before Google I interned at Tableau, was on course staff for Berkeley's intro CS class, and co-founded UTK, a nonprofit that set up STEM labs in 150+ schools in Peru and Colombia.",
-    "I studied EECS at Berkeley. I'm from Lima, live in San Francisco, and speak English, Spanish and Italian.",
+    "Before Google I interned at Tableau, was on course staff for Berkeley's intro CS class, and co-founded UTK, a nonprofit that set up STEM labs in 150+ schools in Peru, Colombia and Argentina.",
+    "I studied EECS with a minor in Data Science at Berkeley. I'm from Lima, live in San Francisco, and speak Spanish, English and Italian. Outside work I play soccer, tennis and pretty much any racquet sport, and I love music and playing guitar.",
   ],
 
   education: [
@@ -33,7 +33,7 @@ export const site = {
     'Kotlin',
     'C# / C',
     'Swift',
-    'English · Spanish · Italian',
+    'Spanish · English · Italian',
   ],
 
   links: [
